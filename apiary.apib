@@ -1,8 +1,521 @@
-HOST: http://api.mify.com/
+HOST: https://api.transdirect.com.au/
 
---- mify ---
+--- Transdirect Public API V3 ---
 
---
- Resources
-The following is a section of resources related to the shopping cart
---
+---
+**THIS IS A WORK IN PROGRESS**.
+
+A location is a unique postcode/suburb combination. A suburb might have multiple locations with different postcodes
+and similarly a postcode will have many locations for each suburb within the postcode.
+
+Authentication is via HTTP basic authentication. API is only accessible via HTTPS.
+
+Error codes: 200 201 304 400 401 403 404 500
+
+Formats: json only.
+---
+
+-- Quick Quote --
+Get a quick quote, this will return a booking id that can be further updated with sender, receiver and other shipping options
+POST /quote
+> Accept: application/json
+{
+    "items": [
+        {
+            "weight": 100,
+            "height": 100,
+            "width": 100,
+            "depth": 100,
+            "quantity": 1,
+            "unit": "pallet"
+        },
+        {
+            "weight": 10,
+            "height": 10,
+            "width": 10,
+            "depth": 10,
+            "quantity": 5,
+            "unit": "carton"
+        }  
+    ],
+    "from": {
+        "postcode": "2000",
+        "type": "residential"
+    },
+    "to": {
+        "postcode": "3000",
+        "type": "business"
+    },
+    "dangerousGoods": false
+}
+< 201
+< Location: /bookings/{bookingId}
+< Content-Type: application/json
+
+
+-- Bookings Resources --
+
+Create a new booking - this will return a booking id which must be returned when confirming the booking along with 
+the selected courier. If all required info is included it will also return a quote.
+POST /bookings
+> Accept: application/json
+{
+    "insuranceValue" : 10000
+}
+< 201
+< Content-Type: application/json
+< Location: /bookings/{bookingId} 
+{
+    "booking": {
+        "items": [
+            {
+                "weight": 10.23,
+                "width": 34,
+                "height": 23.5,
+                "length": 15,
+                "description": "This is a single item.",
+                "quantity": 1
+            },
+            {
+                "weight": 9,
+                "width": 10,
+                "height": 20,
+                "length": 10,
+                "description": "Item is an item that has 4 units of identical weight and dimensions.",
+                "quantity": 4
+            }
+        ],
+        "notifications": {
+            "email": true,
+            "sms": false
+        },
+        "quotes": {
+            "toll": 47.87,
+            "allied": 56.97,
+            "couriersplease": 53.65
+        },
+        "receiver": {
+            "name": "John Smith",
+            "email": "john@example.com",
+            "phone": "02 9999 9999",
+            "companyName": "Test Company",
+            "address": "1 Test Street",
+            "suburb": "SURRY HILLS",
+            "state": "NSW",
+            "postcode": "2010",
+            "type": "business" 
+        },
+        "sender": {
+            "name": "Jane Smith",
+            "email": "jane@example.com",
+            "phone": "02 9999 9999",
+            "companyName": "Test Company",
+            "address": "2 Test Street",
+            "suburb": "DARLINGHURST",
+            "state": "NSW",
+            "postcode": "2010",
+            "pickupDate": "2013-12-31",
+            "hydraulicGate": false,
+            "type": "residential"
+        },
+        "payment": {
+            "status": "unpaid"
+        },
+        "tracking": {
+            "code": "AAA123",
+            "url": "http://api.transdirect.com/bookings/track/{bookingId}",
+            "link": "http://www.transdirect.com/track?id={bookingId}"
+        }
+    },
+    "meta": {
+        "cheapestPrice": 47.87,
+        "cheapestService": "toll",
+        "code": 201,
+        "status": "confirmed_unpaid"
+    }
+}
+
+Get all your bookings
+GET /bookings{?limit,offset,orderBy}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "bookings": [
+        { "id": 12345, "items": [], "notifications": {} },
+        { "id": 12346, "items": [], "notifications": {} },
+        { "id": 12377, "items": [], "notifications": {} },
+        { "id": 12567, "items": [], "notifications": {} }
+    ],
+    "links" : {
+        "first": "http://api.transdirect.com.au/bookings?limit=20",
+        "previous": "",
+        "next": "",
+        "last": ""
+    },
+    "meta": {
+        "count": 34,
+        "code": 200
+    }
+}
+
+Update a booking, this will allow you to update sender/receiver/item info in the booking. Also responds on PATCH. For example if you update or modify the
+booking you will receive an update quote.
+PUT /bookings/{bookingId}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "booking": {
+        "items": [
+            {
+                "weight": 10.23,
+                "width": 34,
+                "height": 23.5,
+                "length": 15,
+                "description": "This is a single item.",
+                "quantity": 1
+            }
+        ]
+    }
+}
+
+Get an existing booking that has not yet been. If all required info is included it will also return a quote.
+GET /bookings/{bookingId}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "booking": {
+        "id": 33546,
+        "cheapestPrice": 47.87,
+        "cheapestService": "toll",
+        "status": "confirmed_unpaid",
+        "canConfirm": false,
+        "items": [
+            {
+                "weight": 10.23,
+                "width": 34,
+                "height": 23.5,
+                "length": 15,
+                "description": "This is a single item.",
+                "quantity": 1
+            },
+            {
+                "weight": 9,
+                "width": 10,
+                "height": 20,
+                "length": 10,
+                "description": "Item is an item that has 4 units of identical weight and dimensions.",
+                "quantity": 4
+            }
+        ],
+        "notifications": {
+            "email": true,
+            "sms": false
+        },
+        "quotes": {
+            "toll": 47.87,
+            "allied": 56.97,
+            "couriersplease": 53.65
+        },
+        "receiver": {
+            "name": "John Smith",
+            "email": "john@example.com",
+            "phone": "02 9999 9999",
+            "companyName": "Test Company",
+            "address": "1 Test Street",
+            "suburb": "SURRY HILLS",
+            "state": "NSW",
+            "postcode": "2010",
+            "type": "business" 
+        },
+        "sender": {
+            "name": "Jane Smith",
+            "email": "jane@example.com",
+            "phone": "02 9999 9999",
+            "companyName": "Test Company",
+            "address": "2 Test Street",
+            "suburb": "DARLINGHURST",
+            "state": "NSW",
+            "postcode": "2010",
+            "pickupDate": "2013-12-31",
+            "hydraulicGate": false,
+            "type": "residential"
+        },
+        "payment": {
+            "status": "unpaid",
+            "confirmation": "",
+            "timestamp": null
+        },
+        "trackingCode": "",
+        "trackingCodeUrl": ""
+    },
+    "meta": {
+        "code": 201
+    }
+}
+
+Get the PDF label for a booking
+GET /bookings/{bookingId}/label
+< 200
+< Content-Type: application/pdf
+< Content-disposition: attachment; filename=label.pdf
+
+
+Pay for a booking - fields TBC
+PUT /bookings/{bookingId}/payment
+> Accept: application/json
+< 200
+< Content-Type: application/json
+[]
+
+-- Members Resources --
+
+Get the current member - should return full account info (balance etc)
+GET /member
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "member": {
+        "name": "John Smith",
+        "company": "Test Company",
+        "email": "john@example.com",
+        "address": "",
+        "suburb": "",
+        "postcode": "",
+        "state": "NSW",
+        "phone": "02 9999 9999",
+        "discountFactor": 0.05,
+        "creditLimit": 5000,
+        "creditLimitAvailable": 4355.34,
+        "chargeType": "invoice",
+        "terms": 30,
+        "active": true
+    },
+    "meta": {
+        "code": 200
+    }
+}
+
+Get a members bookings
+GET /members/{memberId}/bookings{?limit,offset,orderBy}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+[]
+
+Get a members address book
+GET /members/{memberId}/addresses{?limit,offset,orderBy}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "addresses": [
+        {
+            "id": 65543,
+            "address": "10 Test Street",
+            "suburb": "Darlinghurst",
+            "state": "NSW",
+            "postcode": "2010"
+        },
+        {
+            "id": 66643,
+            "address": "20 Test Street",
+            "suburb": "Darlinghurst",
+            "state": "NSW",
+            "postcode": "2010"
+        }
+    ],
+    "links": {},
+    "meta": {}
+}
+
+Create a new entry in the members address book
+POST /members/{memberId}/addresses
+> Accept: application/json
+< 201
+< Content-Type: application/json
+< Location: /members/{memberId}/addresses/{addressId}
+[]
+
+Get a single address from address book
+GET /members/{memberId}/addresses/{addressId}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "address": {
+        "id": 65543,
+        "address": "10 Test Street",
+        "suburb": "Darlinghurst",
+        "state": "NSW",
+        "postcode": "2010"
+    },
+    "meta": {}
+}
+
+Get monthly statements
+GET /members/{memberId}/statements{?limit,offset,orderBy}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+[]
+
+Get single monthly statement
+GET /members/{memberId}/statements/{statementId}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+[]
+
+-- Locations Resources --
+
+Get all locations.
+GET /locations
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "locations": [
+        {
+            "locality": "SYDNEY",
+            "pcode": "1001",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY",
+            "pcode": "1002",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY",
+            "pcode": "1003",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY",
+            "pcode": "1004",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY",
+            "pcode": "1005",
+            "state": "NSW"
+        }
+    ],
+    "links": {
+        "first": "http://api.transdirect.com.au/locations?page=1",
+        "previous": "http://api.transdirect.com.au/locations?page=1",
+        "next": "http://api.transdirect.com.au/locations?page=3",
+        "last": "http://api.transdirect.com.au/locations?page=123"
+    },
+    "meta": {
+        "count": 20123,
+        "code": 200,
+        "message": ""
+    }
+}
+
+Search all locations.
+GET /locations{?searchTerm}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "locations": [
+        {
+            "locality": "SYDNEY",
+            "pcode": "1001",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY",
+            "pcode": "1002",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY",
+            "pcode": "1003",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY",
+            "pcode": "1004",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY",
+            "pcode": "1005",
+            "state": "NSW"
+        }
+    ],
+    "links": {},
+    "meta": {
+        "count": 5,
+        "limit": 10,
+        "offset": 0,
+        "query": "sydn",
+        "code": 200,
+        "message": ""
+    }
+}
+
+Get all locations available. Please note this data is for use in typeaheads etc and may not be 100% accurate for all 
+couriers as each has their own postcode and suburb data.
+GET /locations/postcode/{postcode}
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "locations": [
+        {
+            "locality": "BARANGAROO",
+            "pcode": "2000",
+            "state": "NSW"
+        },
+        {
+            "locality": "DAWES POINT",
+            "pcode": "2000",
+            "state": "NSW"
+        },
+        {
+            "locality": "HAYMARKET",
+            "pcode": "2000",
+            "state": "NSW"
+        },
+        {
+            "locality": "MILLERS POINT",
+            "pcode": "2000",
+            "state": "NSW"
+        },
+        {
+            "locality": "PARLIAMENT HOUSE",
+            "pcode": "2000",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY",
+            "pcode": "2000",
+            "state": "NSW"
+        },
+        {
+            "locality": "SYDNEY SOUTH",
+            "pcode": "2000",
+            "state": "NSW"
+        },
+        {
+            "locality": "THE ROCKS",
+            "pcode": "2000",
+            "state": "NSW"
+        }
+    ],
+    "meta": {
+        "count": 8,
+        "code": 200,
+        "postcode": "2000"
+    }
+}
+
+
