@@ -1,23 +1,28 @@
+FORMAT: X-1A
 HOST: https://api.transdirect.com.au/
 
---- Transdirect Public API V3 ---
+# Transdirect Public API V3
 
----
-**THIS IS A WORK IN PROGRESS**.
-
-A location is a unique postcode/suburb combination. A suburb might have multiple locations with different postcodes
-and similarly a postcode will have many locations for each suburb within the postcode.
+This is a WIP API for Transdirect.
 
 Authentication is via HTTP basic authentication. API is only accessible via HTTPS.
 
 Error codes: 200 201 304 400 401 403 404 500
 
 Formats: json only.
----
 
--- Quick Quote --
+# Group Locations
+A location is a unique postcode/suburb combination. A suburb might have multiple locations with different postcodes
+and similarly a postcode will have many locations for each suburb within the postcode.
+
+
+# Group Quotes
 Get a quick quote, this will return a booking id that can be further updated with sender, receiver and other shipping options
-POST /quote
+
+# Quote [/quote]
+
+## Get a quick quote [GET]
+
 > Accept: application/json
 {
     "items": [
@@ -48,10 +53,87 @@ POST /quote
     },
     "dangerousGoods": false
 }
-< 201
-< Location: /bookings/{bookingId}
-< Content-Type: application/json
 
++ Response 201 (application/json)
+
+    + Headers  
+    
+        Location: /bookings/{bookingId}
+        Content-Type: application/json
+    
+    + Body 
+        
+        ```js
+        {
+            "booking": {
+                "items": [
+                    {
+                        "weight": 10.23,
+                        "width": 34,
+                        "height": 23.5,
+                        "length": 15,
+                        "description": "This is a single item.",
+                        "quantity": 1
+                    },
+                    {
+                        "weight": 9,
+                        "width": 10,
+                        "height": 20,
+                        "length": 10,
+                        "description": "Item is an item that has 4 units of identical weight and dimensions.",
+                        "quantity": 4
+                    }
+                ],
+                "notifications": {
+                    "email": true,
+                    "sms": false
+                },
+                "quotes": {
+                    "toll": 47.87,
+                    "allied": 56.97,
+                    "couriersplease": 53.65
+                },
+                "receiver": {
+                    "name": "John Smith",
+                    "email": "john@example.com",
+                    "phone": "02 9999 9999",
+                    "companyName": "Test Company",
+                    "address": "1 Test Street",
+                    "suburb": "SURRY HILLS",
+                    "state": "NSW",
+                    "postcode": "2010",
+                    "type": "business" 
+                },
+                "sender": {
+                    "name": "Jane Smith",
+                    "email": "jane@example.com",
+                    "phone": "02 9999 9999",
+                    "companyName": "Test Company",
+                    "address": "2 Test Street",
+                    "suburb": "DARLINGHURST",
+                    "state": "NSW",
+                    "postcode": "2010",
+                    "pickupDate": "2013-12-31",
+                    "hydraulicGate": false,
+                    "type": "residential"
+                },
+                "payment": {
+                    "status": "unpaid"
+                },
+                "tracking": {
+                    "code": "AAA123",
+                    "url": "http://api.transdirect.com/bookings/track/{bookingId}",
+                    "link": "http://www.transdirect.com/track?id={bookingId}"
+                }
+            },
+            "meta": {
+                "cheapestPrice": 47.87,
+                "cheapestService": "toll",
+                "code": 201,
+                "status": "confirmed_unpaid"
+            }
+        }
+    ```
 
 -- Bookings Resources --
 
