@@ -63,80 +63,54 @@ Get a quick quote, this will return a booking id that can be further updated wit
 
     + Headers  
     
+        ```
         Location: /bookings/{bookingId}
-        Content-Type: application/json
+        ```
     
     + Body 
         
         ```js
         {
-            "booking": {
-                "items": [
-                    {
-                        "weight": 10.23,
-                        "width": 34,
-                        "height": 23.5,
-                        "length": 15,
-                        "description": "This is a single item.",
-                        "quantity": 1
-                    },
-                    {
-                        "weight": 9,
-                        "width": 10,
-                        "height": 20,
-                        "length": 10,
-                        "description": "Item is an item that has 4 units of identical weight and dimensions.",
-                        "quantity": 4
-                    }
-                ],
-                "notifications": {
-                    "email": true,
-                    "sms": false
-                },
-                "quotes": {
-                    "toll": 47.87,
-                    "allied": 56.97,
-                    "couriersplease": 53.65
-                },
-                "receiver": {
-                    "name": "John Smith",
-                    "email": "john@example.com",
-                    "phone": "02 9999 9999",
-                    "companyName": "Test Company",
-                    "address": "1 Test Street",
-                    "suburb": "SURRY HILLS",
-                    "state": "NSW",
-                    "postcode": "2010",
-                    "type": "business" 
-                },
-                "sender": {
-                    "name": "Jane Smith",
-                    "email": "jane@example.com",
-                    "phone": "02 9999 9999",
-                    "companyName": "Test Company",
-                    "address": "2 Test Street",
-                    "suburb": "DARLINGHURST",
-                    "state": "NSW",
-                    "postcode": "2010",
-                    "pickupDate": "2013-12-31",
-                    "hydraulicGate": false,
-                    "type": "residential"
-                },
-                "payment": {
-                    "status": "unpaid"
-                },
-                "tracking": {
-                    "code": "AAA123",
-                    "url": "http://api.transdirect.com/bookings/track/{bookingId}",
-                    "link": "http://www.transdirect.com/track?id={bookingId}"
-                }
+            "dangerousGoods": false,
+            "from": {
+                "postcode": "2000",
+                "type": "residential"
             },
-            "meta": {
-                "cheapestPrice": 47.87,
-                "cheapestService": "toll",
-                "code": 201,
-                "status": "confirmed_unpaid"
-            }
+            "items": [
+                {
+                    "weight": 100,
+                    "height": 100,
+                    "width": 100,
+                    "depth": 100,
+                    "quantity": 1,
+                    "unit": "pallet"
+                },
+                {
+                    "weight": 10,
+                    "height": 10,
+                    "width": 10,
+                    "depth": 10,
+                    "quantity": 5,
+                    "unit": "carton"
+                }  
+            ],
+            "to": {
+                "postcode": "3000",
+                "type": "business"
+            },
+            "notifications": {
+                "email": true,
+                "sms": false
+            },
+            "quotes": {
+                "toll" : 47.87,
+                "allied" : 56.97,
+                "couriersplease" : 53.65
+            },
+            "payment": {
+                "status": "unpaid"
+            },
+            "status" : "quote"
         }
     ```
 
