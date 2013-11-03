@@ -23,36 +23,41 @@ Get a quick quote, this will return a booking id that can be further updated wit
 
 ## Get a quick quote [GET]
 
-> Accept: application/json
-{
-    "items": [
++ Request (application/json)
+
+    + Body 
+        
+        ```js
         {
-            "weight": 100,
-            "height": 100,
-            "width": 100,
-            "depth": 100,
-            "quantity": 1,
-            "unit": "pallet"
-        },
-        {
-            "weight": 10,
-            "height": 10,
-            "width": 10,
-            "depth": 10,
-            "quantity": 5,
-            "unit": "carton"
-        }  
-    ],
-    "from": {
-        "postcode": "2000",
-        "type": "residential"
-    },
-    "to": {
-        "postcode": "3000",
-        "type": "business"
-    },
-    "dangerousGoods": false
-}
+            "items": [
+                {
+                    "weight": 100,
+                    "height": 100,
+                    "width": 100,
+                    "depth": 100,
+                    "quantity": 1,
+                    "unit": "pallet"
+                },
+                {
+                    "weight": 10,
+                    "height": 10,
+                    "width": 10,
+                    "depth": 10,
+                    "quantity": 5,
+                    "unit": "carton"
+                }  
+            ],
+            "from": {
+                "postcode": "2000",
+                "type": "residential"
+            },
+            "to": {
+                "postcode": "3000",
+                "type": "business"
+            },
+            "dangerousGoods": false
+        }
+        ```
 
 + Response 201 (application/json)
 
