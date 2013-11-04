@@ -16,12 +16,14 @@ A location is a unique postcode/suburb combination. A suburb might have multiple
 and similarly a postcode will have many locations for each suburb within the postcode.
 
 
-# Group Quotes
+# Group Bookings
 Get a quick quote, this will return a booking id that can be further updated with sender, receiver and other shipping options
 
-# Quote [/quote]
+# Booking [/bookings]
 
-## Get a quick quote [GET]
+## Create a booking or get a quick quote [POST]
+At a minimum the body must contain the fields below. Following creation you can update the booking from the
+returned booking id.
 
 + Request (application/json)
 
@@ -29,6 +31,7 @@ Get a quick quote, this will return a booking id that can be further updated wit
         
         ```js
         {
+            "insuranceValue" : 10000,
             "items": [
                 {
                     "weight": 100,
@@ -71,6 +74,7 @@ Get a quick quote, this will return a booking id that can be further updated wit
         
         ```js
         {
+            "id" : 232456,
             "dangerousGoods": false,
             "from": {
                 "postcode": "2000",
@@ -94,13 +98,13 @@ Get a quick quote, this will return a booking id that can be further updated wit
                     "unit": "carton"
                 }  
             ],
-            "to": {
-                "postcode": "3000",
-                "type": "business"
-            },
             "notifications": {
                 "email": true,
                 "sms": false
+            },
+            "to": {
+                "postcode": "3000",
+                "type": "business"
             },
             "quotes": {
                 "toll" : 47.87,
@@ -110,115 +114,14 @@ Get a quick quote, this will return a booking id that can be further updated wit
             "payment": {
                 "status": "unpaid"
             },
-            "status" : "quote"
+            "status" : "quoted"
         }
-    ```
+        ```
 
--- Bookings Resources --
 
-Create a new booking - this will return a booking id which must be returned when confirming the booking along with 
-the selected courier. If all required info is included it will also return a quote.
-POST /bookings
-> Accept: application/json
-{
-    "insuranceValue" : 10000
-}
-< 201
-< Content-Type: application/json
-< Location: /bookings/{bookingId} 
-{
-    "booking": {
-        "items": [
-            {
-                "weight": 10.23,
-                "width": 34,
-                "height": 23.5,
-                "length": 15,
-                "description": "This is a single item.",
-                "quantity": 1
-            },
-            {
-                "weight": 9,
-                "width": 10,
-                "height": 20,
-                "length": 10,
-                "description": "Item is an item that has 4 units of identical weight and dimensions.",
-                "quantity": 4
-            }
-        ],
-        "notifications": {
-            "email": true,
-            "sms": false
-        },
-        "quotes": {
-            "toll": 47.87,
-            "allied": 56.97,
-            "couriersplease": 53.65
-        },
-        "receiver": {
-            "name": "John Smith",
-            "email": "john@example.com",
-            "phone": "02 9999 9999",
-            "companyName": "Test Company",
-            "address": "1 Test Street",
-            "suburb": "SURRY HILLS",
-            "state": "NSW",
-            "postcode": "2010",
-            "type": "business" 
-        },
-        "sender": {
-            "name": "Jane Smith",
-            "email": "jane@example.com",
-            "phone": "02 9999 9999",
-            "companyName": "Test Company",
-            "address": "2 Test Street",
-            "suburb": "DARLINGHURST",
-            "state": "NSW",
-            "postcode": "2010",
-            "pickupDate": "2013-12-31",
-            "hydraulicGate": false,
-            "type": "residential"
-        },
-        "payment": {
-            "status": "unpaid"
-        },
-        "tracking": {
-            "code": "AAA123",
-            "url": "http://api.transdirect.com/bookings/track/{bookingId}",
-            "link": "http://www.transdirect.com/track?id={bookingId}"
-        }
-    },
-    "meta": {
-        "cheapestPrice": 47.87,
-        "cheapestService": "toll",
-        "code": 201,
-        "status": "confirmed_unpaid"
-    }
-}
+## Get all your bookings [GET]
 
-Get all your bookings
-GET /bookings{?limit,offset,orderBy}
-> Accept: application/json
-< 200
-< Content-Type: application/json
-{
-    "bookings": [
-        { "id": 12345, "items": [], "notifications": {} },
-        { "id": 12346, "items": [], "notifications": {} },
-        { "id": 12377, "items": [], "notifications": {} },
-        { "id": 12567, "items": [], "notifications": {} }
-    ],
-    "links" : {
-        "first": "http://api.transdirect.com.au/bookings?limit=20",
-        "previous": "",
-        "next": "",
-        "last": ""
-    },
-    "meta": {
-        "count": 34,
-        "code": 200
-    }
-}
+
 
 Update a booking, this will allow you to update sender/receiver/item info in the booking. Also responds on PATCH. For example if you update or modify the
 booking you will receive an update quote.
