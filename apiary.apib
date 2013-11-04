@@ -80,10 +80,6 @@ The `country` field in `from`/`to` is set to "AU" by default.
         {
             "id" : 232456,
             "dangerousGoods": false,
-            "from": {
-                "postcode": "2000",
-                "type": "residential"
-            },
             "items": [
                 {
                     "id" : 523456,
@@ -108,8 +104,14 @@ The `country` field in `from`/`to` is set to "AU" by default.
                 "email": true,
                 "sms": false
             },
+            "from": {
+                "country" : "AU",
+                "postCode": "2000",
+                "type": "residential"
+            },
             "to": {
-                "postcode": "3000",
+                "country" : "AU",
+                "postCode": "3000",
                 "type": "business"
             },
             "quotes": {
