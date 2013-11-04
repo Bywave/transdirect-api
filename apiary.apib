@@ -12,18 +12,16 @@ Error codes: 200 201 304 400 401 403 404 415 500
 Formats: JSON only including input - 415 error on invalid content types.
 
 # Group Locations
-A location is a unique postcode/suburb combination. A suburb might have multiple locations with different postcodes
-and similarly a postcode will have many locations for each suburb within the postcode.
+A location is a unique post_code/suburb combination. A suburb might have multiple locations with different post_codes and similarly a post_code will have many locations for each suburb within the post_code.
 
 
 # Group Bookings
 Get a quick quote, this will return a booking id that can be further updated with sender, receiver and other shipping options
 
-# Booking [/bookings{?since,order}]
+# Booking [/bookings{?since,order_by,order}]
 
 ## Create a booking or get a quick quote [POST]
-At a minimum the body must contain the fields below. Following creation you can update the booking from the
-returned booking id by using the PUT or PATCH methods.
+At a minimum the body must contain the fields below. Following creation you can update the booking from the returned booking id by using the PUT or PATCH methods.
 
 The `country` field in `from`/`to` is set to "AU" by default.
 
@@ -33,7 +31,7 @@ The `country` field in `from`/`to` is set to "AU" by default.
         
         ```js
         {
-            "insuranceValue" : 10000,
+            "insurance_value" : 10000,
             "items": [
                 {
                     "weight": 100,
@@ -52,17 +50,17 @@ The `country` field in `from`/`to` is set to "AU" by default.
                     "unit": "carton"
                 }  
             ],
-            "from": {
+            "sender": {
                 "country" : "AU",
-                "postCode": "2000",
+                "post_code": "2000",
                 "type": "residential"
             },
-            "to": {
+            "receiver": {
                 "country" : "AU",
-                "postCode": "3000",
+                "post_code": "3000",
                 "type": "business"
             },
-            "dangerousGoods": false
+            "dangerous_goods": false
         }
         ```
 
@@ -71,7 +69,7 @@ The `country` field in `from`/`to` is set to "AU" by default.
     + Headers  
     
         ```
-        Location: /bookings/{bookingId}
+        Location: /bookings/232456
         ```
     
     + Body 
@@ -79,7 +77,7 @@ The `country` field in `from`/`to` is set to "AU" by default.
         ```js
         {
             "id" : 232456,
-            "dangerousGoods" : false,
+            "dangerous_goods" : false,
             "items" : [
                 {
                     "id" : 523456,
@@ -104,14 +102,14 @@ The `country` field in `from`/`to` is set to "AU" by default.
                 "email": true,
                 "sms": false
             },
-            "from": {
+            "sender": {
                 "country" : "AU",
-                "postCode": "2000",
+                "post_code": "2000",
                 "type": "residential"
             },
-            "to": {
+            "receiver": {
                 "country" : "AU",
-                "postCode": "3000",
+                "post_code": "3000",
                 "type": "business"
             },
             "quotes": {
@@ -123,8 +121,8 @@ The `country` field in `from`/`to` is set to "AU" by default.
                 "status": "unpaid"
             },
             "status" : "quoted",
-            "createdAt" : "2013-10-26T18:24:02Z",
-            "updatedAt" : "2013-10-26T18:24:02Z"
+            "created_at" : "2013-10-26T18:24:02Z",
+            "updated_at" : "2013-10-26T18:24:02Z"
         }
         ```
 
@@ -134,8 +132,8 @@ The `country` field in `from`/`to` is set to "AU" by default.
 + Parameters
 
     + since (optional, string) ... Timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ` Only bookings created at or after this time are returned.
-    + order (optional, string) ... The sort order of the bookings returned. Default is `createdAt`, options are `price`, `updatedAt`
-    
+    + order_by (optional, string) ... The sort order of the bookings returned. Default is `created_at`, options are `price`, `updated_at`
+    + order (optional, string) ... Order direction. Default is `desc`, other value is `asc`.
     
 + Response 201 (application/json)
 
@@ -143,59 +141,122 @@ The `country` field in `from`/`to` is set to "AU" by default.
         
         ```js
         {
+            fill in this later with array of bookings...
+        }
+        ```
+    
+# Booking [/bookings/{id}]
+Notes: Do we want to use UTC? Do we want receipt code in response?
+Statuses: quoted, booked, paid, confirmed, shipped, rejected
+
++ Model (application/json)
+
+    JSON representation of Booking Resource.
+
+    + Headers
+
+            Link: <http:/api.gistfox.com/gists/42/star>;rel="self"
+
+    + Body
+
+        ```js
+        {
             "id" : 232456,
-            "dangerousGoods": false,
-            "from": {
-                "postcode": "2000",
-                "type": "residential"
-            },
-            "items": [
+            "booked_at" : "2013-10-26T18:28:02Z",
+            "booked_by" : "receiver",
+            "connote" : 1258993,
+            "charged_weight" : 22.5958,
+            "created_at" : "2013-10-26T18:24:02Z",
+            "dangerous_goods" : false,
+            "description" : "Timber Tv unit",            
+            "items" : [
                 {
-                    "weight": 100,
-                    "height": 100,
-                    "width": 100,
-                    "depth": 100,
-                    "quantity": 1,
-                    "unit": "pallet"
+                    "id" : 523456,
+                    "weight" : 100,
+                    "height" : 100,
+                    "width" : 100,
+                    "depth" : 100,
+                    "quantity" : 1,
+                    "unit" : "pallet"
                 },
                 {
-                    "weight": 10,
-                    "height": 10,
-                    "width": 10,
-                    "depth": 10,
-                    "quantity": 5,
-                    "unit": "carton"
+                    "id" : 523459,
+                    "weight" : 10,
+                    "height" : 10,
+                    "width" : 10,
+                    "depth" : 10,
+                    "quantity" : 5,
+                    "unit" : "carton"
                 }  
             ],
+            "label" : {
+                "html" : "https://api.transdirect.com.au/bookings/232456/label.html",
+                "pdf" : "https://api.transdirect.com.au/bookings/232456/label.pdf"
+            },
             "notifications": {
                 "email": true,
                 "sms": false
             },
-            "to": {
-                "postcode": "3000",
-                "type": "business"
+            "payment": {
+                "status": "paid",
+                "receipt" : "6TU89567LC691552C"
+            },
+            "pickup_window" : {
+                "start" : "2013-13-26T13:00:00Z"
+                "end" : "2013-13-26T17:00:00Z"
             },
             "quotes": {
                 "toll" : 47.87,
                 "allied" : 56.97,
                 "couriersplease" : 53.65
             },
-            "payment": {
-                "status": "unpaid"
+            "receiver": {
+                "id" : 123456,
+                "address" : "1 Main Street",
+                "country" : "AU",
+                "email" : "test1@example.com",
+                "name" : "Test User",
+                "phone" : "0400 000 000",
+                "post_code": "3000",
+                "state" : "VIC",
+                "suburb" : "MELBOURNE",
+                "type": "business"
             },
-            "status" : "quoted"
+            "scanned_weight" : 23,
+            "sender": {
+                "id" : 123455,
+                "address" : "1 Main Street",
+                "country" : "AU",
+                "email" : "test1@example.com",
+                "name" : "Test User",
+                "phone" : "0400 000 000",
+                "post_code": "2000",
+                "state" : "NSW",
+                "suburb" : "SYDNEY",
+                "type": "residential"
+            },
+            "special_instructions" : "FRAGILE If delivery unattended, call Transdirect on 1300 668 229 to arrange redelivery details."
+            "status" : "confirmed",
+            "updated_at" : "2013-10-26T18:24:02Z"
         }
-        ```
-    
-# Booking [/bookings/{id}]
+        ```        
 
 ## Get a single booking [GET]
++ Response 200
 
+    [Booking][]
+    
 ## Update a booking [PUT]
++ Response 200
+
+    [Booking][]
 
 ## Partially update a booking [PATCH]
++ Response 200
 
-# Booking Items [/bookings/{id}/items]
+    [Booking][]
+
+# Booking Item [/bookings/{id}/items]
 
 
 
@@ -297,7 +358,7 @@ GET /member
         "email": "john@example.com",
         "address": "",
         "suburb": "",
-        "postcode": "",
+        "post_code": "",
         "state": "NSW",
         "phone": "02 9999 9999",
         "discountFactor": 0.05,
@@ -331,14 +392,14 @@ GET /members/{memberId}/addresses{?limit,offset,orderBy}
             "address": "10 Test Street",
             "suburb": "Darlinghurst",
             "state": "NSW",
-            "postcode": "2010"
+            "post_code": "2010"
         },
         {
             "id": 66643,
             "address": "20 Test Street",
             "suburb": "Darlinghurst",
             "state": "NSW",
-            "postcode": "2010"
+            "post_code": "2010"
         }
     ],
     "links": {},
@@ -364,7 +425,7 @@ GET /members/{memberId}/addresses/{addressId}
         "address": "10 Test Street",
         "suburb": "Darlinghurst",
         "state": "NSW",
-        "postcode": "2010"
+        "post_code": "2010"
     },
     "meta": {}
 }
@@ -476,8 +537,8 @@ GET /locations{?searchTerm}
 }
 
 Get all locations available. Please note this data is for use in typeaheads etc and may not be 100% accurate for all 
-couriers as each has their own postcode and suburb data.
-GET /locations/postcode/{postcode}
+couriers as each has their own post_code and suburb data.
+GET /locations/post_code/{post_code}
 > Accept: application/json
 < 200
 < Content-Type: application/json
@@ -527,7 +588,7 @@ GET /locations/postcode/{postcode}
     "meta": {
         "count": 8,
         "code": 200,
-        "postcode": "2000"
+        "post_code": "2000"
     }
 }
 
