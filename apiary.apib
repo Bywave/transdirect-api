@@ -11,9 +11,6 @@ Error codes: 200 201 304 400 401 403 404 415 500
 
 Formats: JSON only including input - 415 error on invalid content types.
 
-# Group Locations
-A location is a unique post_code/suburb combination. A suburb might have multiple locations with different post_codes and similarly a post_code will have many locations for each suburb within the post_code.
-
 
 # Group Bookings
 Get a quick quote, this will return a booking id that can be further updated with sender, receiver and other shipping options
@@ -132,8 +129,7 @@ The `country` field in `from`/`to` is set to "AU" by default.
 + Parameters
 
     + since (optional, string) ... Timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ` Only bookings created at or after this time are returned.
-    + order_by (optional, string) ... The sort order of the bookings returned. Default is `created_at`, options are `price`, `updated_at`
-    + order (optional, string) ... Order direction. Default is `desc`, other value is `asc`.
+    + sort (optional, string) ... The sort order of the bookings returned. Default is `created_at`, options are `price`, `updated_at`. Add `-` before value for reverse sort, e.g. `-created_at`.
     
 + Response 201 (application/json)
 
@@ -145,10 +141,20 @@ The `country` field in `from`/`to` is set to "AU" by default.
         }
         ```
     
+
+
+
+
 # Booking [/bookings/{id}]
 Notes: Do we want to use UTC? Do we want receipt code in response?
 Statuses: quoted, booked, paid, confirmed, shipped, rejected
+Headers: Link headers?
 
+
++ Parameters
+
+    + id (required, integer) ... Id of the booking.
+ 
 + Model (application/json)
 
     JSON representation of Booking Resource.
@@ -246,7 +252,7 @@ Statuses: quoted, booked, paid, confirmed, shipped, rejected
 
     [Booking][]
     
-## Update a booking [PUT]
+## Update or partially update a booking [PUT]
 + Response 200
 
     [Booking][]
@@ -256,62 +262,102 @@ Statuses: quoted, booked, paid, confirmed, shipped, rejected
 
     [Booking][]
 
-# Booking Item [/bookings/{id}/items]
+# Booking Item Collection [/bookings/{id}/items]
++ Parameters
 
-
-
-## Get all items in a booking [GET]
-
-+ Response 200 (application/json)
+    + id (required, integer) ... Id of the booking.
  
-   ```js
++ Model (application/json)
+
+    JSON representation of Item Resource.
+
+    + Body
+
+    ```
     [
         {
-            "weight": 100,
-            "height": 100,
-            "width": 100,
-            "depth": 100,
-            "quantity": 1,
-            "unit": "pallet"
+            "id" : 523459,
+            "weight" : 10,
+            "height" : 10,
+            "width" : 10,
+            "depth" : 10,
+            "quantity" : 5,
+            "unit" : "carton"
         },
         {
-            "weight": 10,
-            "height": 10,
-            "width": 10,
-            "depth": 10,
-            "quantity": 5,
-            "unit": "carton"
-        }  
+            "id" : 523471,
+            "weight" : 10,
+            "height" : 10,
+            "width" : 10,
+            "depth" : 10,
+            "quantity" : 2,
+            "unit" : "carton"
+        }
     ]
     ```
-    
+
+## Get all items in a booking [GET]
++ Response 200
+
+    [Booking Item Collection][]
 
 ## Add an item to a booking [POST]
-Todo: do we need an id in the response?
++ Response 201
 
-+ Response 201 (application/json)
+    [Booking Item Collection][]
+
+
+
+
+
+
+# Booking Item [/bookings/{id}/items/{item_id}]
++ Parameters
+
+    + id (required, integer) ... Id of the booking.
+    + item_id (required, integer) ... Id of the item.
  
-    + Headers  
-    
-        ```
-        Location: /bookings/{bookingId}/item/{itemId}
-        ```
-    
-    + Body 
-    
-       ```js
-        {
-            "weight": 20,
-            "height": 30,
-            "width": 10,
-            "depth": 10,
-            "quantity": 5,
-            "unit": "carton"
-        }
-        ```
++ Model (application/json)
+
+    JSON representation of Item Resource.
+
+    + Body
+
+    ```
+    {
+        "id" : 523459,
+        "weight" : 10,
+        "height" : 10,
+        "width" : 10,
+        "depth" : 10,
+        "quantity" : 5,
+        "unit" : "carton"
+    }
+    ```
+
+## Get an item [GET]
++ Response 200
+
+    [Booking Item][]
+
+## Update an item [PUT]
++ Response 200
+
+    [Booking Item][]
+
+## Partially update an item [PATCH]
++ Response 200
+
+    [Booking Item][]
+
+## Remove an item from a booking [DELETE]
++ Response 204
 
 
-# Booking Items [/bookings/{id}/label]
+
+
+
+# Booking Label [/bookings/{id}/label]
 
 ## GET /bookings/{id}/label
 Get the PDF label for a booking
@@ -444,7 +490,9 @@ GET /members/{memberId}/statements/{statementId}
 < Content-Type: application/json
 []
 
--- Locations Resources --
+# Group Locations
+A location is a unique post_code/suburb combination. A suburb might have multiple locations with different post_codes and similarly a post_code will have many locations for each suburb within the post_code.
+
 
 Get all locations.
 GET /locations
