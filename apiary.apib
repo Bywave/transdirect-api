@@ -7,9 +7,9 @@ This is a WIP API for Transdirect.
 
 Authentication is via HTTP basic authentication. API is only accessible via HTTPS.
 
-Error codes: 200 201 304 400 401 403 404 500
+Error codes: 200 201 304 400 401 403 404 415 500
 
-Formats: json only.
+Formats: JSON only including input - 415 error on invalid content types.
 
 # Group Locations
 A location is a unique postcode/suburb combination. A suburb might have multiple locations with different postcodes
@@ -19,11 +19,11 @@ and similarly a postcode will have many locations for each suburb within the pos
 # Group Bookings
 Get a quick quote, this will return a booking id that can be further updated with sender, receiver and other shipping options
 
-# Booking [/bookings]
+# Booking [/bookings{?since}]
 
 ## Create a booking or get a quick quote [POST]
 At a minimum the body must contain the fields below. Following creation you can update the booking from the
-returned booking id.
+returned booking id by using the PUT or PATCH methods.
 
 + Request (application/json)
 
@@ -121,118 +121,155 @@ returned booking id.
 
 ## Get all your bookings [GET]
 
++ Parameters
 
+    + since (optional, string) ... Timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ` Only bookings created at or after this time are returned.
+    
++ Response 201 (application/json)
 
-Update a booking, this will allow you to update sender/receiver/item info in the booking. Also responds on PATCH. For example if you update or modify the
-booking you will receive an update quote.
-PUT /bookings/{bookingId}
-> Accept: application/json
-< 200
-< Content-Type: application/json
-{
-    "booking": {
-        "items": [
-            {
-                "weight": 10.23,
-                "width": 34,
-                "height": 23.5,
-                "length": 15,
-                "description": "This is a single item.",
-                "quantity": 1
-            }
-        ]
-    }
-}
-
-Get an existing booking that has not yet been. If all required info is included it will also return a quote.
-GET /bookings/{bookingId}
-> Accept: application/json
-< 200
-< Content-Type: application/json
-{
-    "booking": {
-        "id": 33546,
-        "cheapestPrice": 47.87,
-        "cheapestService": "toll",
-        "status": "confirmed_unpaid",
-        "canConfirm": false,
-        "items": [
-            {
-                "weight": 10.23,
-                "width": 34,
-                "height": 23.5,
-                "length": 15,
-                "description": "This is a single item.",
-                "quantity": 1
+    + Body 
+        
+        ```js
+        {
+            "id" : 232456,
+            "dangerousGoods": false,
+            "from": {
+                "postcode": "2000",
+                "type": "residential"
             },
-            {
-                "weight": 9,
-                "width": 10,
-                "height": 20,
-                "length": 10,
-                "description": "Item is an item that has 4 units of identical weight and dimensions.",
-                "quantity": 4
-            }
-        ],
-        "notifications": {
-            "email": true,
-            "sms": false
-        },
-        "quotes": {
-            "toll": 47.87,
-            "allied": 56.97,
-            "couriersplease": 53.65
-        },
-        "receiver": {
-            "name": "John Smith",
-            "email": "john@example.com",
-            "phone": "02 9999 9999",
-            "companyName": "Test Company",
-            "address": "1 Test Street",
-            "suburb": "SURRY HILLS",
-            "state": "NSW",
-            "postcode": "2010",
-            "type": "business" 
-        },
-        "sender": {
-            "name": "Jane Smith",
-            "email": "jane@example.com",
-            "phone": "02 9999 9999",
-            "companyName": "Test Company",
-            "address": "2 Test Street",
-            "suburb": "DARLINGHURST",
-            "state": "NSW",
-            "postcode": "2010",
-            "pickupDate": "2013-12-31",
-            "hydraulicGate": false,
-            "type": "residential"
-        },
-        "payment": {
-            "status": "unpaid",
-            "confirmation": "",
-            "timestamp": null
-        },
-        "trackingCode": "",
-        "trackingCodeUrl": ""
-    },
-    "meta": {
-        "code": 201
-    }
-}
+            "items": [
+                {
+                    "weight": 100,
+                    "height": 100,
+                    "width": 100,
+                    "depth": 100,
+                    "quantity": 1,
+                    "unit": "pallet"
+                },
+                {
+                    "weight": 10,
+                    "height": 10,
+                    "width": 10,
+                    "depth": 10,
+                    "quantity": 5,
+                    "unit": "carton"
+                }  
+            ],
+            "notifications": {
+                "email": true,
+                "sms": false
+            },
+            "to": {
+                "postcode": "3000",
+                "type": "business"
+            },
+            "quotes": {
+                "toll" : 47.87,
+                "allied" : 56.97,
+                "couriersplease" : 53.65
+            },
+            "payment": {
+                "status": "unpaid"
+            },
+            "status" : "quoted"
+        }
+        ```
+    
+# Booking [/bookings/{id}]
 
+## Get a single booking [GET]
+
+## Update a booking [PUT]
+
+## Partially update a booking [PATCH]
+
+# Booking Items [/bookings/{id}/items]
+
+
+
+## Get all items in a booking [GET]
+
++ Response 200 (application/json)
+ 
+   ```js
+    [
+        {
+            "weight": 100,
+            "height": 100,
+            "width": 100,
+            "depth": 100,
+            "quantity": 1,
+            "unit": "pallet"
+        },
+        {
+            "weight": 10,
+            "height": 10,
+            "width": 10,
+            "depth": 10,
+            "quantity": 5,
+            "unit": "carton"
+        }  
+    ]
+    ```
+    
+
+## Add an item to a booking [POST]
+Todo: do we need an id in the response?
+
++ Response 201 (application/json)
+ 
+    + Headers  
+    
+        ```
+        Location: /bookings/{bookingId}/item/{itemId}
+        ```
+    
+    + Body 
+    
+       ```js
+        {
+            "weight": 20,
+            "height": 30,
+            "width": 10,
+            "depth": 10,
+            "quantity": 5,
+            "unit": "carton"
+        }
+        ```
+
+
+# Booking Items [/bookings/{id}/label]
+
+## GET /bookings/{id}/label
 Get the PDF label for a booking
-GET /bookings/{bookingId}/label
-< 200
-< Content-Type: application/pdf
-< Content-disposition: attachment; filename=label.pdf
+
++ Response 200 (application/pdf)
+ 
+    + Headers  
+    
+        ```
+        Location: /bookings/{bookingId}/item/{itemId}
+        ```
+    
+    + Body 
+    
+       ```js
+        {
+            "weight": 20,
+            "height": 30,
+            "width": 10,
+            "depth": 10,
+            "quantity": 5,
+            "unit": "carton"
+        }
+        ```
+
++ Response 201 (application/pdf)
 
 
+## PUT /bookings/{bookingId}/payment
 Pay for a booking - fields TBC
-PUT /bookings/{bookingId}/payment
-> Accept: application/json
-< 200
-< Content-Type: application/json
-[]
+
 
 -- Members Resources --
 
