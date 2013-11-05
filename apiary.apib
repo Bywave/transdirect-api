@@ -148,8 +148,9 @@ The `country` field in `from`/`to` is set to "AU" by default.
 
 # Booking [/bookings/{id}]
 Notes: Do we want to use UTC? Do we want receipt code in response?
-Statuses: quoted, booked, paid, confirmed, shipped, rejected
+Statuses: quoted, booked, paid, confirmed, picked-up, in-transit, delivered, rejected?
 Headers: Link headers?
+Changes: after it's been paid only TD staff can modify the order, otherwise it's locked
 
 + Parameters
 
@@ -414,84 +415,96 @@ Headers: Link headers?
 # Group Locations
 A location is a unique postcode/suburb combination. A suburb might have multiple locations with different post_codes and similarly a post_code will have many locations for each suburb within the post_code.
 
+# Locations [/locations{?q}]
 
 ## Get all locations [GET]
-+ Response 200 application/json
++ Response 200 (application/json)
+
+    + Headers
+    
+        ```
+        Link: <https://api.transdirect.com.com/locations?offset=100&limit=100>; rel="next", <https://api.transdirect.com.au/locations?offset=21000&limit=100>; rel="last"
+        X-Total-Count: 24564
+        ```
 
     + Body
-    ```
-    [
-        {
-            "locality": "SYDNEY",
-            "pcode": "1001",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY",
-            "pcode": "1002",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY",
-            "pcode": "1003",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY",
-            "pcode": "1004",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY",
-            "pcode": "1005",
-            "state": "NSW"
-        }
-    ]
-    ```
+    
+        ```js
+        [
+            {
+                "locality": "SYDNEY",
+                "pcode": "1001",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY",
+                "pcode": "1002",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY",
+                "pcode": "1003",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY",
+                "pcode": "1004",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY",
+                "pcode": "1005",
+                "state": "NSW"
+            }
+        ]
+        ```
 
-Search all locations.
-GET /locations{?searchTerm}
-> Accept: application/json
-< 200
-< Content-Type: application/json
-{
-    "locations": [
-        {
-            "locality": "SYDNEY",
-            "pcode": "1001",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY",
-            "pcode": "1002",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY",
-            "pcode": "1003",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY",
-            "pcode": "1004",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY",
-            "pcode": "1005",
-            "state": "NSW"
-        }
-    ],
-    "links": {},
-    "meta": {
-        "count": 5,
-        "limit": 10,
-        "offset": 0,
-        "query": "sydn",
-        "code": 200,
-        "message": ""
-    }
-}
+## Search locations [GET]
+
++ Parameters
+
+    + q (required, string) ... Search term. This will be matched on postcode or suburb name.
+    
++ Response 200 (application/json)
+    
+    + Headers
+    
+        ```
+        Link: <https://api.transdirect.com.com/locations?offset=100&limit=100>; rel="next", <https://api.transdirect.com.au/locations?offset=200&limit=100>; rel="last"
+        X-Total-Count: 254
+        ```
+
+    + Body
+    
+        ```js
+        [
+            {
+                "locality": "SYDNEY",
+                "pcode": "1001",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY",
+                "pcode": "1002",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY",
+                "pcode": "1003",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY",
+                "pcode": "1004",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY",
+                "pcode": "1005",
+                "state": "NSW"
+            }
+        ]
+        ```
 
 Get all locations available. Please note this data is for use in typeaheads etc and may not be 100% accurate for all 
 couriers as each has their own post_code and suburb data.
