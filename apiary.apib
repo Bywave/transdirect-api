@@ -459,6 +459,8 @@ A location is a unique postcode/suburb combination. A suburb might have multiple
         ]
         ```
 
+# Group Search Locations
+
 ## Search locations [GET]
 
 + Parameters
@@ -506,60 +508,71 @@ A location is a unique postcode/suburb combination. A suburb might have multiple
         ]
         ```
 
+
+# Locations within a postcode [/locations/post_code/{postCode}]
 Get all locations available. Please note this data is for use in typeaheads etc and may not be 100% accurate for all 
 couriers as each has their own post_code and suburb data.
-GET /locations/post_code/{post_code}
-> Accept: application/json
-< 200
-< Content-Type: application/json
-{
-    "locations": [
-        {
-            "locality": "BARANGAROO",
-            "pcode": "2000",
-            "state": "NSW"
-        },
-        {
-            "locality": "DAWES POINT",
-            "pcode": "2000",
-            "state": "NSW"
-        },
-        {
-            "locality": "HAYMARKET",
-            "pcode": "2000",
-            "state": "NSW"
-        },
-        {
-            "locality": "MILLERS POINT",
-            "pcode": "2000",
-            "state": "NSW"
-        },
-        {
-            "locality": "PARLIAMENT HOUSE",
-            "pcode": "2000",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY",
-            "pcode": "2000",
-            "state": "NSW"
-        },
-        {
-            "locality": "SYDNEY SOUTH",
-            "pcode": "2000",
-            "state": "NSW"
-        },
-        {
-            "locality": "THE ROCKS",
-            "pcode": "2000",
-            "state": "NSW"
-        }
-    ],
-    "meta": {
-        "count": 8,
-        "code": 200,
-        "post_code": "2000"
-    }
-}
+
++ Parameters
+
+    + postCode (required, string) ... Post code to search for locations.
+
+## Get all locations within a postcode [GET]
+
++ Response 200 (application/json)
+    
+    + Headers
+    
+        ```
+        Link: <https://api.transdirect.com.com/locations?offset=100&limit=100>; rel="next", <https://api.transdirect.com.au/locations?offset=200&limit=100>; rel="last"
+        X-Total-Count: 254
+        ```
+
+    + Body
+
+        ```
+        [
+            {
+                "locality": "BARANGAROO",
+                "pcode": "2000",
+                "state": "NSW"
+            },
+            {
+                "locality": "DAWES POINT",
+                "pcode": "2000",
+                "state": "NSW"
+            },
+            {
+                "locality": "HAYMARKET",
+                "pcode": "2000",
+                "state": "NSW"
+            },
+            {
+                "locality": "MILLERS POINT",
+                "pcode": "2000",
+                "state": "NSW"
+            },
+            {
+                "locality": "PARLIAMENT HOUSE",
+                "pcode": "2000",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY",
+                "pcode": "2000",
+                "state": "NSW"
+            },
+            {
+                "locality": "SYDNEY SOUTH",
+                "pcode": "2000",
+                "state": "NSW"
+            },
+            {
+                "locality": "THE ROCKS",
+                "pcode": "2000",
+                "state": "NSW"
+            }
+        ]
+        ```
 
 
