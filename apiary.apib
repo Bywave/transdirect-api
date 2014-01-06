@@ -75,7 +75,6 @@ The `country` field in `from`/`to` is set to "AU" by default.
         ```js
         {
             "id" : 232456,
-            "dangerous_goods" : false,
             "items" : [
                 {
                     "id" : 523456,
@@ -247,21 +246,40 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
         ```        
 
 ## Get a single booking [GET]
+
 + Response 200
 
     [Booking][]
     
-## Update or partially update a booking [PUT]
+## Update a booking [PUT]
+
++ Request (application/json)
+
+    [Booking][]
+
 + Response 200
 
     [Booking][]
 
 ## Partially update a booking [PATCH]
+
++ Request (application/json)
+
+    + Body 
+        
+        ```js
+        {
+            "id" : 232456,
+            "description" : "New description"
+        }
+        ```
+        
 + Response 200
 
     [Booking][]
 
 # Booking Item Collection [/bookings/{id}/items]
+
 + Parameters
 
     + id (required, integer) ... Id of the booking.
@@ -296,11 +314,13 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
         ```
 
 ## Get all items in a booking [GET]
+
 + Response 200
 
     [Booking Item Collection][]
 
 ## Add an item to a booking [POST]
+
 + Response 201
 
     [Booking Item Collection][]
@@ -311,6 +331,7 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
 
 
 # Booking Item [/bookings/{id}/items/{item_id}]
+
 + Parameters
 
     + id (required, integer) ... Id of the booking.
@@ -340,16 +361,19 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
     [Booking Item][]
 
 ## Update an item [PUT]
+
 + Response 200
 
     [Booking Item][]
 
 ## Partially update an item [PATCH]
+
 + Response 200
 
     [Booking Item][]
 
 ## Remove an item from a booking [DELETE]
+
 + Response 204
 
 
@@ -357,7 +381,9 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
 
 
 # Booking Label [/bookings/{id}/label]
+
 + Parameters
+
     + id (required, integer) ... Id of the booking.
 
 ## Get the PDF label for a booking [GET]
@@ -377,9 +403,14 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
         ```
 
 # Booking Payment [/bookings/{id}/payment]
+
 + Parameters
+
     + id (required, integer) ... Id of the booking.
 
+
+
+# Booking confirmation [/bookings/{id}/confirm]
 
 
 
@@ -388,6 +419,7 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
 # Member [/member]
 
 ## Get the currently authenticated member [GET]
+
 + Response 200 (application/json)
     
     + Body
