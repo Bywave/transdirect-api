@@ -114,19 +114,19 @@ The `country` field in `from`/`to` is set to "AU" by default.
             "quotes": {
                 "toll" : {
                     "price": 47.87,
-                    "insured_amount" : 0,
+                    "insured_amount" : 5000,
                     "service_type": "road",
                     "transit_time": "1-2 days" 
                 },
                 "allied" : {
                     "price" : 56.97,
-                    "insured_amount" : 0,
+                    "insured_amount" : 1500,
                     "service_type": "road",
                     "transit_time": "1-2 days"
                 },
                 "couriersplease" : {
                     "price": 53.65,
-                    "insured_amount" : 0,
+                    "insured_amount" : 1500,
                     "service_type": "road",
                     "transit_time": "1-2 days"
                 }
@@ -164,7 +164,7 @@ The `country` field in `from`/`to` is set to "AU" by default.
 
 # Booking [/bookings/{id}]
 Notes: Do we want to use UTC? Do we want receipt code in response?
-Statuses: quoted, booked, paid, confirmed, picked-up, in-transit, delivered, rejected?
+Statuses: quoted, booked, paid, confirmed, cancelled, picked_up, in_transit, delivered, error
 Headers: Link headers?
 Changes: after it's been paid only TD staff can modify the order, otherwise it's locked
 
