@@ -112,9 +112,24 @@ The `country` field in `from`/`to` is set to "AU" by default.
                 "type": "business"
             },
             "quotes": {
-                "toll" : 47.87,
-                "allied" : 56.97,
-                "couriersplease" : 53.65
+                "toll" : {
+                    "price": 47.87,
+                    "insured_amount" : 0,
+                    "service_type": "road",
+                    "transit_time": "1-2 days" 
+                },
+                "allied" : {
+                    "price" : 56.97,
+                    "insured_amount" : 0,
+                    "service_type": "road",
+                    "transit_time": "1-2 days"
+                },
+                "couriersplease" : {
+                    "price": 53.65,
+                    "insured_amount" : 0,
+                    "service_type": "road",
+                    "transit_time": "1-2 days"
+                }
             },
             "payment": {
                 "status": "unpaid"
@@ -214,9 +229,24 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
                 "end" : "2013-13-26T17:00:00Z"
             },
             "quotes": {
-                "toll" : 47.87,
-                "allied" : 56.97,
-                "couriersplease" : 53.65
+                "toll" : {
+                    "price": 47.87,
+                    "insured_amount" : 0,
+                    "service_type": "road",
+                    "transit_time": "1-2 days" 
+                },
+                "allied" : {
+                    "price" : 56.97,
+                    "insured_amount" : 0,
+                    "service_type": "road",
+                    "transit_time": "1-2 days"
+                },
+                "couriersplease" : {
+                    "price": 53.65,
+                    "insured_amount" : 0,
+                    "service_type": "road",
+                    "transit_time": "1-2 days"
+                }
             },
             "receiver": {
                 "id" : 123456,
