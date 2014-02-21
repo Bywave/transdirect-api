@@ -55,12 +55,12 @@ The `country` field in `from`/`to` is set to "AU" by default.
             ],
             "sender": {
                 "country" : "AU",
-                "post_code": "2000",
+                "postcode": "2000",
                 "type": "residential"
             },
             "receiver": {
                 "country" : "AU",
-                "post_code": "3000",
+                "postcode": "3000",
                 "type": "business"
             }
         }
@@ -105,12 +105,12 @@ The `country` field in `from`/`to` is set to "AU" by default.
             },
             "sender": {
                 "country" : "AU",
-                "post_code": "2000",
+                "postcode": "2000",
                 "type": "residential"
             },
             "receiver": {
                 "country" : "AU",
-                "post_code": "3000",
+                "postcode": "3000",
                 "type": "business"
             },
             "quotes": {
@@ -257,7 +257,7 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
                 "email" : "test1@example.com",
                 "name" : "Test User",
                 "phone" : "0400 000 000",
-                "post_code": "3000",
+                "postcode": "3000",
                 "state" : "VIC",
                 "suburb" : "MELBOURNE",
                 "type": "business"
@@ -270,7 +270,7 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
                 "email" : "test1@example.com",
                 "name" : "Test User",
                 "phone" : "0400 000 000",
-                "post_code": "2000",
+                "postcode": "2000",
                 "state" : "NSW",
                 "suburb" : "SYDNEY",
                 "type": "residential"
@@ -488,7 +488,7 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
             "email": "john@example.com",
             "address": "",
             "suburb": "",
-            "post_code": "",
+            "postcode": "",
             "state": "NSW",
             "phone": "02 9999 9999",
             "discount_factor": 0.05,
@@ -502,7 +502,7 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
 
 
 # Group Locations
-A location is a unique postcode/suburb combination. A suburb might have multiple locations with different post_codes and similarly a post_code will have many locations for each suburb within the post_code.
+A location is a unique postcode/suburb combination. A suburb might have multiple locations with different postcodes and similarly a postcode will have many locations for each suburb within the postcode.
 
 # Locations [/locations]
 
@@ -600,9 +600,9 @@ A location is a unique postcode/suburb combination. A suburb might have multiple
         ```
 
 
-# Locations within a postcode [/locations/post_code/{postCode}]
+# Locations within a postcode [/locations/postcode/{postCode}]
 Get all locations available. Please note this data is for use in typeaheads etc and may not be 100% accurate for all 
-couriers as each has their own post_code and suburb data.
+couriers as each has their own postcode and suburb data.
 
 + Parameters
 
