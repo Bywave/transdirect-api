@@ -291,9 +291,44 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
 
 + Request (application/json)
 
-    [Booking][]
+    + Body 
+        
+        ```js
+        {
+            "insurance_value" : 10000,
+            "items": [
+                {
+                    "weight": 100,
+                    "height": 100,
+                    "width": 100,
+                    "length": 100,
+                    "quantity": 1,
+                    "description": "pallet"
+                },
+                {
+                    "weight": 10,
+                    "height": 10,
+                    "width": 10,
+                    "length": 10,
+                    "quantity": 5,
+                    "description": "carton"
+                }  
+            ],
+            "sender": {
+                "country" : "AU",
+                "postcode": "2000",
+                "type": "residential"
+            },
+            "receiver": {
+                "country" : "AU",
+                "postcode": "3000",
+                "type": "business"
+            }
+        }
+        ```
 
-+ Response 200
+
++ Response 201
 
     [Booking][]
 
