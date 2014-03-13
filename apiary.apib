@@ -349,6 +349,20 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
 
     [Booking][]
 
+## Confirm a booking [POST]
+Notes: This will take money from customer's credit (website account credit)
++ Request (application/json)
+    + Body
+    
+        ```js
+        {
+            "courier": "allied"
+        }
+        ```
+    
++ Response 204
+    
+
 # Booking Item Collection [/bookings/{id}/items]
 
 + Parameters
@@ -395,11 +409,6 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
 + Response 201
 
     [Booking Item Collection][]
-
-
-
-
-
 
 # Booking Item [/bookings/{id}/items/{item_id}]
 
