@@ -406,6 +406,21 @@ Notes: This will take money from customer's credit (website account credit)
 
 ## Add an item to a booking [POST]
 
++ Request (application/json)
+    
+    + Body
+    
+        ```
+        {
+            "weight" : 10,
+            "height" : 10,
+            "width" : 10,
+            "length" : 10,
+            "quantity" : 5,
+            "description" : "carton"
+        }
+        ```
+
 + Response 201
 
     [Booking Item Collection][]
@@ -442,21 +457,35 @@ Notes: This will take money from customer's credit (website account credit)
 
 ## Update an item [PUT]
 
++ Request (application/json)
+    
+    + Body
+    
+        ```
+        {
+            "height": 5
+        }
+        ```
+
 + Response 200
 
-    [Booking Item][]
-
-## Partially update an item [PATCH]
-
-+ Response  
-
-    [Booking Item][]
+    + Body 
+        
+        ```
+        {
+            "id" : 523459,
+            "weight" : 10,
+            "height" : 5,
+            "width" : 10,
+            "length" : 10,
+            "quantity" : 5,
+            "description" : "carton"
+        }
+        ```
 
 ## Remove an item from a booking [DELETE]
 
 + Response 204
-
-+ Response 403
 
 # Booking Label [/bookings/{id}/label]
 
