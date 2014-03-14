@@ -332,23 +332,6 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
 
     [Booking][]
 
-## Partially update a booking [PATCH]
-
-+ Request (application/json)
-
-    + Body 
-        
-        ```js
-        {
-            "id" : 232456,
-            "insurance_value" : 12345
-        }
-        ```
-        
-+ Response 200
-
-    [Booking][]
-
 ## Confirm a booking [POST]
 Notes: This will take money from customer's credit (website account credit)
 + Request (application/json)
