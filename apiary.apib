@@ -1,21 +1,19 @@
 FORMAT: X-1A
-HOST: https://api.transdirect.com.au/
+HOST: https://www.transdirect.com.au/api
 
 # Transdirect Public API V3
 
 __IN PROGRESS__
 
-This is a WIP API for Transdirect.
+This is a WIP API for Transdirect, that is accessible at https://www.transdirect.com.au/api/.
 
-Authentication is via HTTP basic authentication. API is only accessible via HTTPS.
+Authentication is via __HTTP basic__ authentication using your member __email__ and __password__. API is only accessible via HTTPS.
 
 Error codes: 200 201 304 400 401 403 404 415 500
 
 Formats: JSON only including input - 415 error on invalid content types.
 
 All times are in ISO8601 format.
-
-__TODO__ - xml/dat output etc for each booking, i.e. what gets sent to courier company 
 
 # Group Bookings
 Get a quick quote, this will return a booking id that can be further updated with sender, receiver and other shipping options
