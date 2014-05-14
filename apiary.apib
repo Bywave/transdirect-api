@@ -18,7 +18,7 @@ All times are in ISO8601 format.
 # Group Bookings
 Get a quick quote, this will return a booking id that can be further updated with sender, receiver and other shipping options
 
-# Booking [/bookings{?since,sort}]
+# Booking [/bookings]
 
 
 ## Create a booking or get a quick quote [POST]
@@ -53,11 +53,13 @@ The `country` field in `from`/`to` is set to "AU" by default.
             ],
             "sender": {
                 "country" : "AU",
+                "suburb" : "SYDNEY",
                 "postcode": "2000",
                 "type": "residential"
             },
             "receiver": {
                 "country" : "AU",
+                "suburb" : "MELBOURNE",
                 "postcode": "3000",
                 "type": "business"
             }
