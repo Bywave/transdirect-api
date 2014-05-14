@@ -33,6 +33,7 @@ The `country` field in `from`/`to` is set to "AU" by default.
         ```js
         {
             "declared_value" : 10000,
+            "description": "Timber Tv unit",
             "items": [
                 {
                     "weight": 100,
@@ -79,6 +80,12 @@ The `country` field in `from`/`to` is set to "AU" by default.
         ```js
         {
             "id" : 232456,
+            "booked_at" : "2013-10-26T18:28:02Z",
+            "booked_by" : "sender",
+            "created_at": "2013-10-26T18:28:02Z",
+            "declared_value" : 2500,
+            "insured_value": 0,
+            "description" : "Timber Tv unit", 
             "items" : [
                 {
                     "id" : 523456,
@@ -99,19 +106,10 @@ The `country` field in `from`/`to` is set to "AU" by default.
                     "description" : "carton"
                 }  
             ],
+            "label": "http://www.transdirect.com.au/api/bookings/232456/label",
             "notifications": {
                 "email": true,
                 "sms": false
-            },
-            "sender": {
-                "country" : "AU",
-                "postcode": "2000",
-                "type": "residential"
-            },
-            "receiver": {
-                "country" : "AU",
-                "postcode": "3000",
-                "type": "business"
             },
             "quotes": {
                 "toll" : {
@@ -136,11 +134,22 @@ The `country` field in `from`/`to` is set to "AU" by default.
                     ]
                 }
             },
-            "payment": {
-                "status": "unpaid"
+            "sender": {
+                "country" : "AU",
+                "postcode": "2000",
+                "type": "residential"
             },
-            "status" : "quoted",
-            "created_at" : "2013-10-26T18:24:02Z",
+            "receiver": {
+                "country" : "AU",
+                "postcode": "3000",
+                "type": "business"
+            },
+            "pickup_window": [],
+            "charged_weight" : 0,
+            "scanned_weight": 0,
+            "special_instructions": "",
+            "connote": '',
+            "status" : "pending_payment",
             "updated_at" : "2013-10-26T18:24:02Z"
         }
         ```
@@ -158,9 +167,184 @@ The `country` field in `from`/`to` is set to "AU" by default.
     + Body 
         
         ```js
-        {
-            fill in this later with array of bookings...
-        }
+        [
+            {
+                "id" : 232456,
+                "booked_at" : "2013-10-26T18:28:02Z",
+                "booked_by" : "receiver",
+                "created_at" : "2013-10-26T18:24:02Z",
+                "declared_value" : 2500,
+                "insured_value": 1500,
+                "description" : "Timber Tv unit",            
+                "items" : [
+                    {
+                        "id" : 523456,
+                        "weight" : 100,
+                        "height" : 100,
+                        "width" : 100,
+                        "length" : 100,
+                        "quantity" : 1,
+                        "description" : "pallet"
+                    },
+                    {
+                        "id" : 523459,
+                        "weight" : 10,
+                        "height" : 10,
+                        "width" : 10,
+                        "length" : 10,
+                        "quantity" : 5,
+                        "description" : "carton"
+                    }  
+                ],
+                "label" : "https://api.transdirect.com.au/bookings/232456/label",
+                "notifications": {
+                    "email": true,
+                    "sms": false
+                },
+                "quotes": {
+                    "toll" : {
+                        "price": 47.87,
+                        "insured_amount" : 0,
+                        "service_type": "road",
+                        "transit_time": "1-2 days" 
+                    },
+                    "allied" : {
+                        "price" : 56.97,
+                        "insured_amount" : 0,
+                        "service_type": "road",
+                        "transit_time": "1-2 days"
+                    },
+                    "couriers_please" : {
+                        "price": 53.65,
+                        "insured_amount" : 0,
+                        "service_type": "road",
+                        "transit_time": "1-2 days"
+                    }
+                },
+                "receiver": {
+                    "id" : 123456,
+                    "address" : "1 Main Street",
+                    "country" : "AU",
+                    "email" : "test1@example.com",
+                    "name" : "Test User",
+                    "phone" : "0400 000 000",
+                    "postcode": "3000",
+                    "state" : "VIC",
+                    "suburb" : "MELBOURNE",
+                    "type": "business"
+                },
+                "sender": {
+                    "id" : 123455,
+                    "address" : "1 Main Street",
+                    "country" : "AU",
+                    "email" : "test1@example.com",
+                    "name" : "Test User",
+                    "phone" : "0400 000 000",
+                    "postcode": "2000",
+                    "state" : "NSW",
+                    "suburb" : "SYDNEY",
+                    "type": "residential"
+                },
+                "pickup_window" : {
+                    "start" : "2013-13-26T13:00:00Z",
+                    "end" : "2013-13-26T17:00:00Z"
+                },
+                "connote" : 1258993,
+                "charged_weight" : 22.5958,
+                "scanned_weight" : 23,
+                "special_instructions" : "FRAGILE If delivery unattended, call Transdirect on 1300 668 229 to arrange redelivery details.",
+                "status" : "confirmed",
+                "updated_at" : "2013-10-26T18:24:02Z"
+            },
+            {
+                "id" : 232456,
+                "booked_at" : "2013-10-26T18:28:02Z",
+                "booked_by" : "receiver",
+                "created_at" : "2013-10-26T18:24:02Z",
+                "declared_value" : 2500,
+                "insured_value": 1500,
+                "description" : "Timber Tv unit",            
+                "items" : [
+                    {
+                        "id" : 523456,
+                        "weight" : 100,
+                        "height" : 100,
+                        "width" : 100,
+                        "length" : 100,
+                        "quantity" : 1,
+                        "description" : "pallet"
+                    },
+                    {
+                        "id" : 523459,
+                        "weight" : 10,
+                        "height" : 10,
+                        "width" : 10,
+                        "length" : 10,
+                        "quantity" : 5,
+                        "description" : "carton"
+                    }  
+                ],
+                "label" : "https://api.transdirect.com.au/bookings/232456/label",
+                "notifications": {
+                    "email": true,
+                    "sms": false
+                },
+                "quotes": {
+                    "toll" : {
+                        "price": 47.87,
+                        "insured_amount" : 0,
+                        "service_type": "road",
+                        "transit_time": "1-2 days" 
+                    },
+                    "allied" : {
+                        "price" : 56.97,
+                        "insured_amount" : 0,
+                        "service_type": "road",
+                        "transit_time": "1-2 days"
+                    },
+                    "couriers_please" : {
+                        "price": 53.65,
+                        "insured_amount" : 0,
+                        "service_type": "road",
+                        "transit_time": "1-2 days"
+                    }
+                },
+                "receiver": {
+                    "id" : 123456,
+                    "address" : "1 Main Street",
+                    "country" : "AU",
+                    "email" : "test1@example.com",
+                    "name" : "Test User",
+                    "phone" : "0400 000 000",
+                    "postcode": "3000",
+                    "state" : "VIC",
+                    "suburb" : "MELBOURNE",
+                    "type": "business"
+                },
+                "sender": {
+                    "id" : 123455,
+                    "address" : "1 Main Street",
+                    "country" : "AU",
+                    "email" : "test1@example.com",
+                    "name" : "Test User",
+                    "phone" : "0400 000 000",
+                    "postcode": "2000",
+                    "state" : "NSW",
+                    "suburb" : "SYDNEY",
+                    "type": "residential"
+                },
+                "pickup_window" : {
+                    "start" : "2013-13-26T13:00:00Z",
+                    "end" : "2013-13-26T17:00:00Z"
+                },
+                "connote" : 1258993,
+                "charged_weight" : 22.5958,
+                "scanned_weight" : 23,
+                "special_instructions" : "FRAGILE If delivery unattended, call Transdirect on 1300 668 229 to arrange redelivery details.",
+                "status" : "confirmed",
+                "updated_at" : "2013-10-26T18:24:02Z"
+            }
+        ]
         ```
     
 
@@ -192,8 +376,6 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
             "id" : 232456,
             "booked_at" : "2013-10-26T18:28:02Z",
             "booked_by" : "receiver",
-            "connote" : 1258993,
-            "charged_weight" : 22.5958,
             "created_at" : "2013-10-26T18:24:02Z",
             "declared_value" : 2500,
             "insured_value": 1500,
@@ -222,10 +404,6 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
             "notifications": {
                 "email": true,
                 "sms": false
-            },
-            "pickup_window" : {
-                "start" : "2013-13-26T13:00:00Z",
-                "end" : "2013-13-26T17:00:00Z"
             },
             "quotes": {
                 "toll" : {
@@ -259,7 +437,6 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
                 "suburb" : "MELBOURNE",
                 "type": "business"
             },
-            "scanned_weight" : 23,
             "sender": {
                 "id" : 123455,
                 "address" : "1 Main Street",
@@ -272,6 +449,13 @@ Changes: after it's been paid only TD staff can modify the order, otherwise it's
                 "suburb" : "SYDNEY",
                 "type": "residential"
             },
+            "pickup_window" : {
+                "start" : "2013-13-26T13:00:00Z",
+                "end" : "2013-13-26T17:00:00Z"
+            },
+            "connote" : 1258993,
+            "charged_weight" : 22.5958,
+            "scanned_weight" : 23,
             "special_instructions" : "FRAGILE If delivery unattended, call Transdirect on 1300 668 229 to arrange redelivery details.",
             "status" : "confirmed",
             "updated_at" : "2013-10-26T18:24:02Z"
