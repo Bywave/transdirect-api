@@ -21,20 +21,21 @@ The `country` field in `from`/`to` is set to "AU" by default.
 
 + Request (application/json)
 
+        
     + Body 
         
         ```js
         {
-            "declared_value" : 10000,
-            "description": "Timber Tv unit",
+            "declared_value" : 10000, // required
+            "description": "Timber Tv unit", // optional
             "items": [
                 {
-                    "weight": 100,
-                    "height": 100,
-                    "width": 100,
-                    "length": 100,
-                    "quantity": 1,
-                    "description": "pallet"
+                    "weight": 100, // required
+                    "height": 100, // required
+                    "width": 100, // required
+                    "length": 100, // required
+                    "quantity": 1, // required
+                    "description": "pallet" // required
                 },
                 {
                     "weight": 10,
@@ -46,16 +47,22 @@ The `country` field in `from`/`to` is set to "AU" by default.
                 }  
             ],
             "sender": {
-                "country" : "AU",
-                "suburb" : "SYDNEY",
-                "postcode": "2000",
-                "type": "residential"
+                "name": "John Doe", // can be empty for quoting purposes, but required on booking confirmation
+                "address": "21 Kirksway Place", // can be empty for quoting purposes, but required on booking confirmation
+                "phone": 1234567889, // can be empty for quoting purposes, but required on booking confirmation
+                "country" : "AU", // required
+                "suburb": "SYDNEY", // required
+                "postcode": "2000", // required
+                "type": "residential" // required (`business` or `residential`)
             },
             "receiver": {
-                "country" : "AU",
-                "suburb" : "MELBOURNE",
-                "postcode": "3000",
-                "type": "business"
+                "name": "John Smith", // can be empty for quoting purposes, but required on booking confirmation
+                "address": "216 Moggill Rd", // can be empty for quoting purposes, but required on booking confirmation
+                "phone": 1234567889, // can be empty for quoting purposes, but required on booking confirmation
+                "suburb": "SYDNEY", // required
+                "country" : "AU", // required
+                "postcode": "3000", // required
+                "type": "business" // required (`business` or `residential`)
             }
         }
         ```
@@ -128,12 +135,20 @@ The `country` field in `from`/`to` is set to "AU" by default.
                 }
             },
             "sender": {
+                "name": "John Doe", 
+                "address": "21 Kirksway Place",
+                "phone": 1234567889, 
                 "country" : "AU",
+                "suburb": "SYDNEY",
                 "postcode": "2000",
-                "type": "residential"
+                "type": "residential" 
             },
             "receiver": {
-                "country" : "AU",
+                "name": "John Smith", 
+                "address": "216 Moggill Rd", 
+                "phone": 1234567889, 
+                "suburb": "SYDNEY", 
+                "country" : "MELBOURNE",
                 "postcode": "3000",
                 "type": "business"
             },
@@ -146,7 +161,6 @@ The `country` field in `from`/`to` is set to "AU" by default.
             "updated_at" : "2013-10-26T18:24:02Z"
         }
         ```
-
 
 ## Get all your bookings [GET]
 
