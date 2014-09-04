@@ -160,7 +160,9 @@ The `country` field in `from`/`to` is set to "AU" by default.
             "special_instructions": "",
             "connote": '',
             "status" : "pending_payment",
-            "updated_at" : "2013-10-26T18:24:02Z"
+            "updated_at" : "2013-10-26T18:24:02Z",
+            "tailgate_pickup": true, // true if the booking has a tailgate pickup, false if not
+            "tailgate_delivery": true // true if the booking has a tailgate delivery, false if not
         }
         ```
 
@@ -263,7 +265,9 @@ The `country` field in `from`/`to` is set to "AU" by default.
                 "scanned_weight" : 23,
                 "special_instructions" : "FRAGILE If delivery unattended, call Transdirect on 1300 668 229 to arrange redelivery details.",
                 "status" : "confirmed",
-                "updated_at" : "2013-10-26T18:24:02Z"
+                "updated_at" : "2013-10-26T18:24:02Z",
+                "tailgate_pickup": true, // true if the booking has a tailgate pickup, false if not
+                "tailgate_delivery": true // true if the booking has a tailgate delivery, false if not
             },
             {
                 "id" : 232456,
@@ -351,7 +355,9 @@ The `country` field in `from`/`to` is set to "AU" by default.
                 "scanned_weight" : 23,
                 "special_instructions" : "FRAGILE If delivery unattended, call Transdirect on 1300 668 229 to arrange redelivery details.",
                 "status" : "confirmed",
-                "updated_at" : "2013-10-26T18:24:02Z"
+                "updated_at" : "2013-10-26T18:24:02Z",
+                "tailgate_pickup": true, // true if the booking has a tailgate pickup, false if not
+                "tailgate_delivery": true // true if the booking has a tailgate delivery, false if not
             }
         ]
         ```
